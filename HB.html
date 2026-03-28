@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Томи </title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,900&family=Montserrat:wght@700;900&display=swap');
+
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    background: linear-gradient(135deg, #1d0f36 0%, #0c0021 100%);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.container {
+    z-index: 10;
+    padding: clamp(20px, 6vw, 40px);
+    width: 85%;
+    max-width: 700px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Стили для фото */
+.princess-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #ff00de;
+    box-shadow: 0 0 20px #ff00de;
+    margin-bottom: 15px;
+    display: none; /* Скрыто до нажатия кнопки */
+    margin-left: auto;
+    margin-right: auto;
+    animation: floatImage 4s ease-in-out infinite;
+}
+
+@keyframes floatImage {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(30px, 6vw, 55px);
+    margin-top: 0;
+    margin-bottom: 15px;
+    line-height: 1.1;
+    color: white;
+    text-shadow: 0 0 10px #ff7a18, 0 0 40px #ff00de, 0 0 80px #ff00de;
+    animation: neonPulse 4s infinite alternate;
+}
+
+button {
+    margin-top: 20px;
+    padding: 15px 30px;
+    font-size: clamp(16px, 3.5vw, 24px);
+    font-weight: 700;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: linear-gradient(45deg, #ff00de, #b9ff00);
+    color: white;
+    box-shadow: 0 4px 20px rgba(185, 255, 0, 0.4);
+    transition: transform 0.2s;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+#message {
+    margin-top: 20px;
+    font-size: clamp(16px, 3.5vw, 24px);
+    font-weight: 700;
+    line-height: 1.6;
+    min-height: 120px;
+    color: #e0faff;
+    /* Убираем разрыв слов */
+    word-break: normal;
+    overflow-wrap: normal;
+}
+
+/* Новый эффект появления, чтобы слова не ломались */
+.glitch-char {
+    animation: textAppear 0.4s ease-out;
+}
+
+@keyframes textAppear {
+    0% { opacity: 0; color: #ff00de; text-shadow: 0 0 10px #ff00de; }
+    100% { opacity: 1; color: #e0faff; text-shadow: none; }
+}
+
+/* Плавающие иконки на фоне */
+.princess-icon {
+    position: absolute;
+    font-size: 30px;
+    animation: float 8s linear infinite;
+    z-index: 1;
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+@keyframes float {
+    from { transform: translateY(100vh) rotate(-20deg); }
+    to { transform: translateY(-10vh) rotate(20deg); }
+}
+
+@keyframes neonPulse {
+    from { text-shadow: 0 0 10px #ff00de, 0 0 20px #ff00de; }
+    to { text-shadow: 0 0 20px #ff00de, 0 0 50px #ff7a18; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <img id="cute-photo" class="princess-photo" src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" alt="Милота">
+
+    <h1>С Днём Рождения, Томи! 👑💖</h1>
+
+    <button onclick="start(this)">Узнать секрет ✨</button>
+
+    <div id="message"></div>
+</div>
+
+<audio id="music" loop>
+    <source src="Sunroof.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// Исправленный текст с эстетичными смайликами
+const text = "Пусть твоя жизнь будет такой же яркой, солнечной и кайфовой! ✨\nЖелаю сиять ярче всех, ловить лучший вайб и всегда быть на высоте! 🌸\nОставайся такой же шикарной и невероятной принцессой! 🦋💖";
+
+const chars = Array.from(text);
+let i = 0;
+
+function typeText() {
+    if (i < chars.length) {
+        const messageContainer = document.getElementById("message");
+        let char = chars[i];
+        
+        if (char === "\n") {
+            // Делаем отступ между абзацами чуть больше
+            messageContainer.innerHTML += "<br><br>";
+        } else if (char === " ") {
+            messageContainer.innerHTML += " ";
+        } else {
+            const span = document.createElement("span");
+            span.className = "glitch-char";
+            span.innerText = char;
+            messageContainer.appendChild(span);
+        }
+        
+        i++;
+        setTimeout(typeText, Math.random() * 40 + 20);
+    }
+}
+
+function start(btn) {
+    btn.style.display = 'none';
+    document.getElementById("cute-photo").style.display = 'block';
+    
+    const music = document.getElementById("music");
+    music.volume = 0.5;
+    music.play().catch(e => console.log("Музыка ждет клика"));
+
+    typeText();
+
+    // Нежные эстетичные иконки на фоне
+    setInterval(() => {
+        const icons = ['✨', '💖', '👑', '🌸', '🦋'];
+        const icon = icons[Math.floor(Math.random()*icons.length)];
+        const span = document.createElement("span");
+        span.className = "princess-icon";
+        span.innerText = icon;
+        span.style.left = Math.random() * 100 + "vw";
+        
+        span.onclick = function() { this.remove(); };
+        
+        document.body.appendChild(span);
+        setTimeout(() => span.remove(), 8000);
+    }, 500);
+}
+</script>
+
+</body>
+</html>
